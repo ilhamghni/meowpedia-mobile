@@ -5,6 +5,184 @@
 ### Link : TBA
 ---
 
+# Tugas 8: Elemen Dasar Flutter
+
+<details>
+<summary>Click for more detail</summary>
+<br>
+
+## Deskripsi Tugas
+Pada tugas ini, saya akan mengimplementasikan navigation, layout, form, dan form input elements pada aplikasi Flutter yang kamu buat pada tugas sebelumnya.
+
+## Checklist Tugas
+- #### ✅  Membuat minimal satu halaman baru pada aplikasi, yaitu halaman formulir tambah item baru dengan ketentuan sebagai berikut:
+
+  - #### ✅ Memakai minimal tiga elemen input, yaitu name, amount, description. Tambahkan   elemen input sesuai dengan model pada aplikasi tugas Django yang telah kamu buat.
+  - #### ✅ Memiliki sebuah tombol Save.
+  - #### ✅ Setiap elemen input di formulir juga harus divalidasi dengan ketentuan sebagai berikut:
+    - #### ✅ Setiap elemen input tidak boleh kosong.
+    - #### ✅ Setiap elemen input harus berisi data dengan tipe data atribut modelnya.
+Membuat folder screen pada lib yang akan menyimpan file catentry_form dan left_drawer:
+membuat class CatEntryFormPage dan _CatEntryFormPageState.
+Pada CatEntryFormPage, build widget yang berisi body berupa Form widget dengan 5 child padding yaitu nama, jumlah, harga, spesies, dan warna sesuai dengan attribut yang sudah ditetapkan. Menambahkan juga validasi dimana setiap input tidak boleh kosong dengan if statement
+membuat tombol save.
+- #### ✅ Mengarahkan pengguna ke halaman form tambah item baru ketika menekan tombol Tambah Item pada halaman utama.
+pada cat_cart.dart ketika nama item yang ditekan adalah `Tambah produk` maka panggil Navigator.push yang akan mengarahkan ke CatEntryFormPage.
+
+- #### ✅ Memunculkan data sesuai isi dari formulir yang diisi dalam sebuah pop-up setelah menekan tombol Save pada halaman formulir tambah item baru.
+membuat tombol save dengan elevated button yang saat ditekan membuat isi dari onPressed yang berisi data-data yang baru saja dimasukkan dengan menggunakan dialog. Seperti berikut:
+```c++
+child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context).colorScheme.primary),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Kucing berhasil tersimpan'),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Nama: $_name'),
+                                    Text('Harga: $_price'),
+                                    Text('Deskripsi: $_description'),
+                                    Text('spesies: $_species'),
+                                    Text('warna: $_color'),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    _formKey.currentState!.reset();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    },
+                    child: const Text(
+                      "Save",
+                      style: TextStyle(color: Colors.white),
+                    ),
+```
+
+- #### ✅ Membuat sebuah drawer pada aplikasi dengan ketentuan sebagai berikut:
+    - #### ✅ Drawer minimal memiliki dua buah opsi, yaitu Halaman Utama dan Tambah Item.
+    - #### ✅ Ketika memiih opsi Halaman Utama, maka aplikasi akan mengarahkan pengguna ke halaman utama.
+    - #### ✅ Ketika memiih opsi Tambah Item, maka aplikasi akan mengarahkan pengguna ke halaman form tambah item baru.
+
+Membuat folder widgets yang akan berisi left_drawer.dart dan juga catentry_form.dart
+pada file tersebut akan dibuat class yang build widget dengan mereturn widget Drawer.
+pada Drawer akan memiliki children ListTile jika di tekan akan `Navigator.pushReplacement` ke laman yang dituju.
+
+#### ✅ Menjawab beberapa pertanyaan berikut pada README.md pada root_folder.
+
+#### 1️⃣ Apa kegunaan const di Flutter? Jelaskan apa keuntungan ketika menggunakan const pada kode Flutter. Kapan sebaiknya kita menggunakan const, dan kapan sebaiknya tidak digunakan?
+
+const di Flutter digunakan untuk mendefinisikan nilai konstan yang tidak akan berubah selama runtime.
+
+Keuntungan menggunakan const pada kode Flutter salah satunya adalah
+efisiensi Memori. Objek const hanya dibuat sekali dan dibagikan di seluruh aplikasi, mengurangi penggunaan memori.
+Kinerja, Menggunakan const dapat meningkatkan kinerja karena objek const diinisialisasi pada waktu kompilasi, bukan pada waktu runtime.
+Keamanan, Membantu mencegah perubahan yang tidak disengaja pada nilai yang seharusnya tetap konstan.
+
+const sebaiknya digunakan saat nilai tidak akan berubah selama runtime.
+Untuk widget yang tidak berubah (immutable) untuk meningkatkan efisiensi rendering
+
+Kapan sebaiknya tidak menggunakan const? const sebaiknya tidak digunakan
+saat nilai perlu berubah selama runtime.
+Untuk objek yang memerlukan inisialisasi dinamis atau bergantung pada input runtime.
+
+
+#### 2️⃣ Jelaskan dan bandingkan penggunaan Column dan Row pada Flutter. Berikan contoh implementasi dari masing-masing layout widget ini!
+
+Column dan Row adalah dua widget layout dasar di Flutter yang digunakan untuk mengatur widget anak dalam arah vertikal dan horizontal.
+
+Column mengatur widget anak dalam arah vertikal (dari atas ke bawah).
+
+``` c++
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Column Example')),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const <Widget>[
+            Text('Item 1'),
+            Text('Item 2'),
+            Text('Item 3'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+Row mengatur widget anak dalam arah horizontal (dari kiri ke kanan).
+
+``` c++
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Row Example')),
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const <Widget>[
+            Text('Item 1'),
+            Text('Item 2'),
+            Text('Item 3'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+#### 3️⃣ Sebutkan apa saja elemen input yang kamu gunakan pada halaman form yang kamu buat pada tugas kali ini. Apakah terdapat elemen input Flutter lain yang tidak kamu gunakan pada tugas ini? Jelaskan!
+
+Pada halaman form yang dibuat, elemen input yang digunakan adalah 
+TextFormField Untuk input teks seperti nama, deskripsi, spesies, dan warna. 
+
+ada beberapa elemen input yang tidak saya gunakan diantaranyy adalah Checkbox, Radio, Switch, Slider, Dropdown button, Date Picker, dll
+
+#### 4️⃣ Bagaimana cara kamu mengatur tema (theme) dalam aplikasi Flutter agar aplikasi yang dibuat konsisten? Apakah kamu mengimplementasikan tema pada aplikasi yang kamu buat?
+
+Tema aplikasi diatur menggunakan ThemeData untuk memberikan konsistensi warna dan gaya di seluruh tampilan. Tema ini menggunakan skema warna berbasis Material Design 3 `(useMaterial3: true)` dengan primarySwatch berwarna abu-abu dan warna aksen hijau `(secondary: Colors.green[400])`. Dengan pengaturan ini, komponen seperti AppBar, tombol, dan teks akan mengikuti palet warna yang seragam, memberikan pengalaman pengguna yang selaras.
+
+#### 5️⃣ Bagaimana cara kamu menangani navigasi dalam aplikasi dengan banyak halaman pada Flutter?
+navigasi diatur melalui widget LeftDrawer, yang berfungsi sebagai menu samping. LeftDrawer berisi beberapa item menu yang memungkinkan pengguna untuk berpindah halaman dengan cepat, seperti menuju halaman utama (MyHomePage) atau ke halaman formulir untuk menambahkan entri kucing (CatEntryFormPage). Header pada drawer ini menggunakan skema warna dari ThemeData aplikasi dan menampilkan nama aplikasi serta deskripsi singkat, sehingga tampilannya tetap konsisten dengan tema utama aplikasi.
+
+Setiap item menu dalam drawer menggunakan Navigator.pushReplacement, yang mengganti halaman saat ini dengan halaman tujuan tanpa menumpuk halaman sebelumnya di dalam stack navigasi. Hal ini memastikan navigasi tetap efisien dan mengizinkan pengguna kembali ke halaman sebelumnya dengan menekan tombol kembali.
+
+#### ✅ Jelaskan bagaimana cara kamu mengimplementasikan checklist-checklist di atas.
+
+#### ✅  Melakukan add-commit-push ke GitHub.
+
+</details>
+
+
+---
+
+
 # Tugas 7: Elemen Dasar Flutter
 
 <details>

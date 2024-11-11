@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meowpedia_mobile/menu.dart';
-
-
+import 'package:meowpedia_mobile/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Meowpedia',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -31,11 +29,10 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        primaryColor: Colors.white,
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: Colors.white,
-          secondary: Colors.black,
-        ),
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.grey,
+        ).copyWith(secondary: Colors.green[400]),
+          useMaterial3: true,
       ),
       home: MyHomePage(),
     );
