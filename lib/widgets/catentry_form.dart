@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:meowpedia_mobile/screens/list_catentry.dart';
 import 'package:meowpedia_mobile/widgets/left_drawer.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class CatEntryFormPage extends StatefulWidget {
   const CatEntryFormPage({super.key});
@@ -11,13 +16,16 @@ class CatEntryFormPage extends StatefulWidget {
 class _CatEntryFormPageState extends State<CatEntryFormPage> {
   final _formKey = GlobalKey<FormState>();
   String _name = "";
+  int _age = 0;
   int _price = 0;
   String _description = "";
   String _species = "";
-  String _color = "";
+  String _colour = "";
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -25,7 +33,7 @@ class _CatEntryFormPageState extends State<CatEntryFormPage> {
             'Form Tambah Kucing',
           ),
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         iconTheme: const IconThemeData(color: Colors.black),
 
@@ -64,6 +72,32 @@ class _CatEntryFormPageState extends State<CatEntryFormPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
+                    hintText: "Age",
+                    labelText: "Age",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _price = int.tryParse(value!) ?? 0;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Age tidak boleh kosong!";
+                    }
+                    if (int.tryParse(value) == null) {
+                      return "Age harus berupa angka!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
                     hintText: "Price",
                     labelText: "Price",
                     border: OutlineInputBorder(
@@ -74,12 +108,6 @@ class _CatEntryFormPageState extends State<CatEntryFormPage> {
                     setState(() {
                       _price = int.tryParse(value!) ?? 0;
                     });
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return "Description tidak boleh kosong!";
-                      }
-                      return null;
-                    };
                   },
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
@@ -150,7 +178,7 @@ class _CatEntryFormPageState extends State<CatEntryFormPage> {
                   ),
                   onChanged: (String? value) {
                     setState(() {
-                      _color = value!;
+                      _colour = value!;
                     });
                   },
                   validator: (String? value) {
@@ -171,37 +199,36 @@ class _CatEntryFormPageState extends State<CatEntryFormPage> {
                       backgroundColor: MaterialStateProperty.all(
                           Theme.of(context).colorScheme.primary),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Kucing berhasil tersimpan'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Nama: $_name'),
-                                    Text('Harga: $_price'),
-                                    Text('Deskripsi: $_description'),
-                                    Text('spesies: $_species'),
-                                    Text('warna: $_color'),
-                                  ],
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    _formKey.currentState!.reset();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+                        final response = await request.postJson(
+                          "http://127.0.0.1:8000/create-cat-flutter/",
+                          jsonEncode(<String, String>{
+                            'name': _name,
+                            'price': _price.toString(),
+                            'age': _age.toString(),
+                            'description': _description,
+                            'species': _species,
+                            'colour': _colour,
+                          }),
                         );
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Cat data has been saved successfully!"),
+                            ),
+                          );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const CatEntryPage()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Failed to save cat data. Please try again."),
+                            ),
+                          );
+                        }
                       }
                     },
                     child: const Text(

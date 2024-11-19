@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meowpedia_mobile/screens/list_catentry.dart';
 import 'package:meowpedia_mobile/screens/menu.dart';
 import 'package:meowpedia_mobile/widgets/catentry_form.dart';
 
@@ -22,7 +23,7 @@ class LeftDrawer extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 Padding(padding: EdgeInsets.all(8)),
@@ -32,7 +33,7 @@ class LeftDrawer extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.normal,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -53,7 +54,6 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.mood),
             title: const Text('Tambah Kucing'),
-            // Bagian redirection ke MoodEntryFormPage
             onTap: () {
               Navigator.pushReplacement(
                   context,
@@ -62,6 +62,17 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.add_reaction_rounded),
+            title: const Text('Daftar Kucing'),
+            onTap: () {
+                // Route menu ke halaman mood
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CatEntryPage()),
+                );
+            },
+        ),
         ],
       ),
     );

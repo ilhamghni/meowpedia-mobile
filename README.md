@@ -5,7 +5,83 @@
 ### Link : TBA
 ---
 
-# Tugas 8: Elemen Dasar Flutter
+# Tugas 9: Integrasi Layanan Web Django dengan Aplikasi Flutter
+
+<details>
+<summary>Click for more detail</summary>
+<br>
+
+## Deskripsi Tugas
+Pada tugas ini, saya akan mengimplementasikan navigation, layout, form, dan form input elements pada aplikasi Flutter yang kamu buat pada tugas sebelumnya.
+
+## Checklist Tugas
+- #### ✅ Memastikan deployment proyek tugas Django kamu telah berjalan dengan baik.
+
+- #### ✅ Mengimplementasikan fitur registrasi akun pada proyek tugas Flutter.
+  - Membuat halaman registrasi dengan form untuk input username, email, dan password.
+  - Mengirim data registrasi ke endpoint Django melalui HTTP POST request.
+  - Menampilkan notifikasi atau pesan sukses setelah registrasi berhasil.
+
+- #### ✅ Membuat halaman login pada proyek tugas Flutter.
+  - Membuat halaman login dengan form untuk input username dan password.
+  - Mengirim data login ke endpoint Django dan menerima respons autentikasi.
+  - Menyimpan session atau token yang diterima untuk keperluan autentikasi selanjutnya.
+- #### ✅ Mengintegrasikan sistem autentikasi Django dengan proyek tugas Flutter.
+  - Menggunakan CookieRequest untuk menyimpan dan mengirim cookies/session.
+  - Memastikan setiap request ke endpoint yang membutuhkan autentikasi menyertakan session yang valid.
+  - Menangani kondisi logout dengan menghapus session atau token yang tersimpan.
+- #### ✅ Membuat model kustom sesuai dengan proyek aplikasi Django.
+  - Membuat model baru di Django sesuai dengan kebutuhan aplikasi.
+  - Melakukan migrasi dan memastikan model terintegrasi dengan database.
+  - Membuat endpoint JSON yang menyediakan data dari model tersebut.
+- #### ✅ Membuat halaman yang berisi daftar semua item yang terdapat pada endpoint JSON di Django yang telah kamu deploy.
+  - #### ✅  Tampilkan name, price, dan description dari masing-masing item pada halaman ini.
+  - Mengambil data dari endpoint JSON menggunakan library http di Flutter.
+  - Menampilkan daftar item dengan atribut name, price, description, dan attibut lainnya.
+  - Mengimplementasikan desain yang responsif dan user-friendly.
+
+- #### ✅ Membuat halaman detail untuk setiap item yang terdapat pada halaman daftar Item.
+  - #### ✅ Halaman ini dapat diakses dengan menekan salah satu item pada halaman daftar Item.
+
+  - #### ✅ Tampilkan seluruh atribut pada model item kamu pada halaman ini.
+
+  - #### ✅ Tambahkan tombol untuk kembali ke halaman daftar item.
+
+- Menambahkan navigasi ke halaman detail saat item diklik.
+- Menampilkan seluruh atribut dari item yang dipilih dengan endpoint json yang telah dibuat.
+- Menambahkan tombol kembali untuk kembali ke halaman daftar item.
+
+- #### ✅ Melakukan filter pada halaman daftar item dengan hanya menampilkan item yang terasosiasi dengan pengguna yang login.
+- Mengubah endpoint di Django untuk mengembalikan data yang telah difilter dengan pengguna yang sedang login.
+- Menangani kondisi di mana pengguna belum login dengan tepat.
+
+#### ✅ Menjawab beberapa pertanyaan berikut pada README.md pada root_folder.
+
+#### 1️⃣ Jelaskan mengapa kita perlu membuat model untuk melakukan pengambilan ataupun pengiriman data JSON? Apakah akan terjadi error jika kita tidak membuat model terlebih dahulu? 
+Membuat model dalam aplikasi web, seperti Django, membantu mempermudah pengelolaan data yang akan diambil atau dikirim dalam format JSON. Model berfungsi sebagai representasi struktur data di database, sehingga memungkinkan validasi, pemrosesan, dan integrasi yang lebih mudah antara data dan logika aplikasi. Adanya mode membuat pengembang dapat memastikan data memiliki format yang sesuai dan konsisten, serta mengurangi kemungkinan error seperti kesalahan tipe data atau atribut yang hilang. Meskipun tanpa model kita masih dapat mengirim dan menerima JSON menggunakan logika manual, hal ini sangat rentan menimbulkan error karena tidak ada validasi otomatis dan lebih sulit untuk dipelihara, terutama jika struktur data menjadi kompleks.
+
+#### 2️⃣ Jelaskan fungsi dari library http yang sudah kamu implementasikan pada tugas ini
+Library `http` di Django, seperti `HttpResponse` atau `JsonResponse`, berfungsi untuk mengelola respons HTTP yang dikirim dari server ke klien. Dalam tugas ini, `JsonResponse` digunakan untuk mengirim data dalam format JSON dari backend Django ke aplikasi Flutter. Fungsi utamanya adalah memformat data Python menjadi JSON yang dapat dengan mudah diproses oleh Flutter. Saya dapat mengatur respons HTTP dengan kode status, header, dan isi yang sesuai, memastikan data yang dikirim dapat diterima dan ditampilkan dengan benar di aplikasi pengguna.
+
+#### 3️⃣ Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+CookieRequest digunakan untuk menyimpan dan mengelola cookies yang diperlukan untuk sesi autentikasi dengan server Django. Dengan membagikan instance CookieRequest ke semua komponen, ini memastikan bahwa setiap permintaan HTTP yang memerlukan autentikasi menyertakan cookies yang benar, sehingga pengguna tetap terautentikasi saat berinteraksi dengan berbagai bagian aplikasi.
+
+#### 4️⃣ Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.
+Data diinput oleh pengguna melalui form di Flutter, kemudian dikirim ke server Django menggunakan HTTP request (misalnya POST untuk registrasi). Server memproses data tersebut, menyimpannya dalam database jika valid, dan mengirimkan respons kembali ke Flutter. Aplikasi Flutter kemudian menampilkan respons tersebut kepada pengguna atau memperbarui tampilan sesuai dengan data yang diterima.
+
+#### 5️⃣ Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+Saat pengguna mendaftar atau melakukan login melalui Flutter, data dikirim ke Django untuk diverifikasi. Jika berhasil, Django mengembalikan cookies sesi yang kemudian disimpan oleh Flutter menggunakan CookieRequest. Setiap kali Flutter melakukan request ke endpoint yang memerlukan autentikasi, cookies ini disertakan untuk memverifikasi sesi pengguna. Untuk logout, Flutter akan mengirim permintaan ke endpoint logout di Django dan menghapus cookies sesi yang tersimpan, sehingga sesi autentikasi diakhiri.
+
+#### ✅ Jelaskan bagaimana cara kamu mengimplementasikan checklist-checklist di atas.
+
+#### ✅  Melakukan add-commit-push ke GitHub.
+
+</details>
+
+
+---
+
+# Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
 
 <details>
 <summary>Click for more detail</summary>
